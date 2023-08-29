@@ -1,3 +1,3 @@
 export function MyComponent(): JSX.Element {
-    return <div>Hello from My Component</div>;
+    return <div>Oskar's and Dani's Flashcards App</div>;
 }
