@@ -1,11 +1,12 @@
-import { MyComponent } from "./MyComponent";
 import "./App.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import FlashcardList from "./FlashcardList";
 
 function App() {
     return (
-        <div className="App">
-            <MyComponent />
-        </div>
+        <ChakraProvider>
+            <FlashcardList />
+        </ChakraProvider>
     );
 }
 
