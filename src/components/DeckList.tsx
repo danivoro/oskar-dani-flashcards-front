@@ -1,14 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import IDeck from "../Interfaces/IDeck";
+import config from "../../utils/config";
 
 export default function DeckList(): JSX.Element {
     const [decks, setDecks] = useState<IDeck[]>([]);
-    const baseURL =
-        process.env.NODE_ENV === "production"
-            ? "https://oskar-dani-flashcard-server.onrender.com"
-            : "http://localhost:4000";
-
+    const baseURL = config.baseURL;
     useEffect(() => {
         const getAllDecks = async () => {
             try {
@@ -20,6 +17,5 @@ export default function DeckList(): JSX.Element {
         };
         getAllDecks();
     }, [baseURL]);
-    console.table(decks);
     return <></>;
 }
