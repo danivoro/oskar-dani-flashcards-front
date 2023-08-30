@@ -2,12 +2,26 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import IDeck from "../Interfaces/IDeck";
 import config from "../../utils/config";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Heading,
+    SimpleGrid,
+    Text,
+} from "@chakra-ui/react";
 
 interface DeckListProps {
     userId: number;
+    setDeckId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function DeckList({ userId }: DeckListProps): JSX.Element {
+export default function DeckList({
+    userId,
+    setDeckId,
+}: DeckListProps): JSX.Element {
     const [decks, setDecks] = useState<IDeck[]>([]);
     const baseURL = config.baseURL;
     useEffect(() => {
@@ -23,5 +37,33 @@ export default function DeckList({ userId }: DeckListProps): JSX.Element {
         getUserDecks();
     }, [baseURL, userId]);
 
-    return <></>;
+    return (
+        <>
+            <SimpleGrid
+                spacing={4}
+                templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+            >
+                {decks.map((deck) => (
+                    <Card key={deck.deck_id}>
+                        <CardHeader>
+                            <Heading size="md">{deck.name}</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text>Deck description here.</Text>
+                        </CardBody>
+                        <CardFooter>
+                            <Button
+                                value={deck.deck_id}
+                                onClick={(e) =>
+                                    setDeckId(parseInt(e.currentTarget.value))
+                                }
+                            >
+                                Study now
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </SimpleGrid>
+        </>
+    );
 }

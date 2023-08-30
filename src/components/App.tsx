@@ -7,14 +7,19 @@ import UserList from "./UserList";
 
 function App() {
     const [userId, setUserId] = useState(0);
-    console.log(userId);
+    const [deckId, setDeckId] = useState(0);
+    console.log(deckId);
     return (
         <ChakraProvider>
-            <UserList setUserId={setUserId} />
+            <UserList setUserId={setUserId} setDeckId={setDeckId} />
             {userId !== 0 && (
                 <>
-                    <DeckList userId={userId} />
-                    <FlashcardList />
+                    <DeckList userId={userId} setDeckId={setDeckId} />
+                </>
+            )}
+            {deckId !== 0 && (
+                <>
+                    <FlashcardList deckId={deckId} />
                 </>
             )}
         </ChakraProvider>

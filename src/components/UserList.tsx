@@ -6,9 +6,13 @@ import { Select } from "@chakra-ui/react";
 
 interface UserListProps {
     setUserId: React.Dispatch<React.SetStateAction<number>>;
+    setDeckId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function UserList({ setUserId }: UserListProps): JSX.Element {
+export default function UserList({
+    setUserId,
+    setDeckId,
+}: UserListProps): JSX.Element {
     const [users, setUsers] = useState<IUser[]>([]);
     const baseURL = config.baseURL;
     useEffect(() => {
@@ -23,10 +27,16 @@ export default function UserList({ setUserId }: UserListProps): JSX.Element {
         getAllUsers();
     }, [baseURL]);
 
+    const handleUserChange = (userId: string) => {
+        const userIdNum = parseInt(userId);
+        setUserId(userIdNum);
+        setDeckId(0);
+    };
+
     return (
         <>
             <Select
-                onChange={(e) => setUserId(parseInt(e.target.value))}
+                onChange={(e) => handleUserChange(e.target.value)}
                 placeholder="Select option"
             >
                 {users.map((user) => (
