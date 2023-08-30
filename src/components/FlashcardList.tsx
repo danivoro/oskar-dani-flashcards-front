@@ -2,28 +2,45 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import IFlashcard from "../Interfaces/IFlashcard";
+import config from "../../utils/config";
+import { Button, Heading, Center } from "@chakra-ui/react";
+import IDeck from "../Interfaces/IDeck";
 
-export default function FlashcardList(): JSX.Element {
+interface FlashcardListProps {
+    deckId: number;
+    setDeckId: React.Dispatch<React.SetStateAction<number>>;
+    deck: IDeck;
+}
+
+export default function FlashcardList({
+    deckId,
+    setDeckId,
+    deck,
+}: FlashcardListProps): JSX.Element {
     const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
-    const baseURL =
-        process.env.NODE_ENV === "production"
-            ? "https://oskar-dani-flashcard-server.onrender.com"
-            : "http://localhost:4000";
-    console.log(baseURL);
+    const baseURL = config.baseURL;
     useEffect(() => {
-        const getAllFlashcards = async () => {
+        const getDeckFlashcards = async () => {
             try {
-                const allFlashcards = await axios.get(`${baseURL}/flashcards`);
-                setFlashcards(allFlashcards.data);
+                const deckFlashcards = await axios.get(
+                    `${baseURL}/${deckId}/flashcards`
+                );
+                setFlashcards(deckFlashcards.data);
             } catch (err) {
                 console.error(err);
             }
         };
-        getAllFlashcards();
-    }, [baseURL]);
-    console.table(flashcards);
+        getDeckFlashcards();
+    }, [baseURL, deckId]);
     return (
         <>
+            <Button m="5" onClick={() => setDeckId(0)}>
+                ← Back to decks
+            </Button>
+            <Center>
+                <Heading m="5">{deck.name} Deck</Heading>
+            </Center>
+
             {flashcards.map((card) => (
                 <Flashcard key={card.card_id} {...card} />
             ))}
