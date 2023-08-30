@@ -36,6 +36,7 @@ export default function UserList({
     return (
         <>
             <Select
+                m="5"
                 onChange={(e) => handleUserChange(e.target.value)}
                 placeholder="Select option"
             >

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import IDeck from "../Interfaces/IDeck";
 import config from "../../utils/config";
 import {
@@ -16,13 +16,16 @@ import {
 interface DeckListProps {
     userId: number;
     setDeckId: React.Dispatch<React.SetStateAction<number>>;
+    decks: IDeck[];
+    setDecks: React.Dispatch<React.SetStateAction<IDeck[]>>;
 }
 
 export default function DeckList({
     userId,
     setDeckId,
+    decks,
+    setDecks,
 }: DeckListProps): JSX.Element {
-    const [decks, setDecks] = useState<IDeck[]>([]);
     const baseURL = config.baseURL;
     useEffect(() => {
         const getUserDecks = async () => {
@@ -35,7 +38,7 @@ export default function DeckList({
             }
         };
         getUserDecks();
-    }, [baseURL, userId]);
+    }, [baseURL, userId, setDecks]);
 
     return (
         <>
