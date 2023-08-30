@@ -2,13 +2,11 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import IFlashcard from "../Interfaces/IFlashcard";
+import config from "../../utils/config";
 
 export default function FlashcardList(): JSX.Element {
     const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
-    const baseURL =
-        process.env.NODE_ENV === "production"
-            ? "https://oskar-dani-flashcard-server.onrender.com"
-            : "http://localhost:4000";
+    const baseURL = config.baseURL;
     console.log(baseURL);
     useEffect(() => {
         const getAllFlashcards = async () => {
