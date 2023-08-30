@@ -7,7 +7,6 @@ import config from "../../utils/config";
 export default function FlashcardList(): JSX.Element {
     const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
     const baseURL = config.baseURL;
-    console.log(baseURL);
     useEffect(() => {
         const getAllFlashcards = async () => {
             try {
@@ -19,7 +18,6 @@ export default function FlashcardList(): JSX.Element {
         };
         getAllFlashcards();
     }, [baseURL]);
-    console.table(flashcards);
     return (
         <>
             {flashcards.map((card) => (

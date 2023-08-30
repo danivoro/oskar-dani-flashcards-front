@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import IUser from "../Interfaces/IUser";
 import config from "../../utils/config";
 import axios from "axios";
+import { Select } from "@chakra-ui/react";
 
 interface UserListProps {
     setUserId: React.Dispatch<React.SetStateAction<number>>;
@@ -21,5 +22,19 @@ export default function UserList({ setUserId }: UserListProps): JSX.Element {
         };
         getAllUsers();
     }, [baseURL]);
-    return <></>;
+
+    return (
+        <>
+            <Select
+                onChange={(e) => setUserId(parseInt(e.target.value))}
+                placeholder="Select option"
+            >
+                {users.map((user) => (
+                    <option value={user.id} key={user.id}>
+                        {user.name}
+                    </option>
+                ))}
+            </Select>
+        </>
+    );
 }

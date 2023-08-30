@@ -7,16 +7,15 @@ import UserList from "./UserList";
 
 function App() {
     const [userId, setUserId] = useState(0);
-
+    console.log(userId);
     return (
         <ChakraProvider>
-            {userId ? (
+            <UserList setUserId={setUserId} />
+            {userId !== 0 && (
                 <>
-                    <DeckList />
+                    <DeckList userId={userId} />
                     <FlashcardList />
                 </>
-            ) : (
-                <UserList setUserId={setUserId} />
             )}
         </ChakraProvider>
     );

@@ -1,4 +1,4 @@
 export default interface IUser {
-    user_id: number;
+    id: number;
     name: string;
 }
