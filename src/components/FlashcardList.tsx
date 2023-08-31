@@ -5,6 +5,7 @@ import IFlashcard from "../Interfaces/IFlashcard";
 import config from "../../utils/config";
 import { Button, Heading, Center } from "@chakra-ui/react";
 import IDeck from "../Interfaces/IDeck";
+import AddFlashcard from "./AddFlashcard";
 
 interface FlashcardListProps {
     deckId: number;
@@ -32,11 +33,15 @@ export default function FlashcardList({
         };
         getDeckFlashcards();
     }, [baseURL, deckId]);
+
     return (
         <>
             <Button m="5" onClick={() => setDeckId(0)}>
                 ← Back to decks
             </Button>
+
+            <AddFlashcard deckId={deckId} />
+
             <Center>
                 <Heading m="5">{deck.name} Deck</Heading>
             </Center>
