@@ -17,41 +17,31 @@ import axios from "axios";
 import React, { useState } from "react";
 import config from "../../utils/config";
 
-interface AddFlashcardProps {
-    deckId: number;
-}
-
-export default function AddFlashcard({
-    deckId,
-}: AddFlashcardProps): JSX.Element {
+export default function AddUser(): JSX.Element {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [front, setFront] = useState("");
-    const [back, setBack] = useState("");
+    const [user, setUser] = useState("");
 
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
 
     const toast = useToast();
-    const showCardToast = () => {
+    const showUserToast = () => {
         toast({
-            title: "Card created.",
-            description: "The new card is added to your deck",
+            title: "User created.",
+            description: "The new user is created in the app",
             status: "success",
             duration: 9000,
             isClosable: true,
         });
     };
 
-    const handleAddCard = async () => {
+    const handleAddUser = async () => {
         try {
-            await axios.post(`${config.baseURL}/flashcards`, {
-                front,
-                back,
-                deck_id: deckId,
+            await axios.post(`${config.baseURL}/users`, {
+                user_name: user,
             });
-            setFront("");
-            setBack("");
-            showCardToast();
+            showUserToast();
+            setUser("");
         } catch (err) {
             console.error(err);
         }
@@ -59,14 +49,13 @@ export default function AddFlashcard({
 
     const handleClose = () => {
         onClose();
-        setFront("");
-        setBack("");
+        setUser("");
     };
 
     return (
         <>
             <Button m="5" bg="green" color="white" onClick={onOpen}>
-                + Add card
+                + Add User
             </Button>
 
             <Modal
@@ -77,32 +66,23 @@ export default function AddFlashcard({
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Create a new flashcard</ModalHeader>
+                    <ModalHeader>Create a new User</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl>
-                            <FormLabel>Front</FormLabel>
+                            <FormLabel>User name</FormLabel>
                             <Input
                                 ref={initialRef}
-                                value={front}
-                                onChange={(e) => setFront(e.target.value)}
-                                placeholder="Flashcard front"
-                            />
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>Back</FormLabel>
-                            <Input
-                                value={back}
-                                onChange={(e) => setBack(e.target.value)}
-                                placeholder="Flashcard back"
+                                value={user}
+                                onChange={(e) => setUser(e.target.value)}
+                                placeholder="User name"
                             />
                         </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button
-                            onClick={handleAddCard}
+                            onClick={handleAddUser}
                             colorScheme="blue"
                             mr={3}
                         >

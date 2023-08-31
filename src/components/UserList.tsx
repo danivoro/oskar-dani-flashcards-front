@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import IUser from "../Interfaces/IUser";
 import config from "../../utils/config";
 import axios from "axios";
-import { Select, Image, Stack, Center } from "@chakra-ui/react";
+import { Select, Image, Stack, Center, Container } from "@chakra-ui/react";
+import AddUser from "./AddUser";
 
 interface UserListProps {
     setUserId: React.Dispatch<React.SetStateAction<number>>;
@@ -44,8 +45,9 @@ export default function UserList({
                     />
                 </Stack>
             </Center>
-            <Center>
+            <Container display="flex">
                 <Select
+                    flexGrow="5"
                     m="5"
                     onChange={(e) => handleUserChange(e.target.value)}
                     placeholder="Select User"
@@ -56,7 +58,8 @@ export default function UserList({
                         </option>
                     ))}
                 </Select>
-            </Center>
+                <AddUser />
+            </Container>
         </>
     );
 }
