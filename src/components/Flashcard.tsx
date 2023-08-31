@@ -22,11 +22,15 @@ export default function Flashcard({
     const [side, setSide] = useState<"front" | "back">("front");
 
     const toast = useToast();
-    const showCorrectToast = () => {
+    const showToast = (
+        title: string,
+        description: string,
+        status: "info" | "warning" | "success" | "error" | "loading" | undefined
+    ) => {
         toast({
-            title: "Congrats!",
-            description: "You won't see this card again today.",
-            status: "success",
+            title: title,
+            description: description,
+            status: status,
             duration: 9000,
             isClosable: true,
         });
@@ -40,7 +44,11 @@ export default function Flashcard({
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
-        showCorrectToast();
+        showToast(
+            "Congrats!",
+            "You won't see this card again today",
+            "success"
+        );
         try {
             await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
                 interval: 2,
@@ -48,6 +56,14 @@ export default function Flashcard({
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const handleIncorrect = () => {
+        showToast(
+            "Oops!",
+            "You will need to go over this again today.",
+            "info"
+        );
     };
 
     return (
@@ -83,7 +99,11 @@ export default function Flashcard({
                                 >
                                     Correct
                                 </Button>
-                                <Button m="2" colorScheme="red">
+                                <Button
+                                    m="2"
+                                    colorScheme="red"
+                                    onClick={(e) => handleIncorrect()}
+                                >
                                     Incorrect
                                 </Button>
                                 <Button
