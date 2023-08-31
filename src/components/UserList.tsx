@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import IUser from "../Interfaces/IUser";
 import config from "../../utils/config";
 import axios from "axios";
-import { Select } from "@chakra-ui/react";
+import { Select, Image, Stack, Center } from "@chakra-ui/react";
 
 interface UserListProps {
     setUserId: React.Dispatch<React.SetStateAction<number>>;
@@ -35,17 +35,28 @@ export default function UserList({
 
     return (
         <>
-            <Select
-                m="5"
-                onChange={(e) => handleUserChange(e.target.value)}
-                placeholder="Select option"
-            >
-                {users.map((user) => (
-                    <option value={user.id} key={user.id}>
-                        {user.name}
-                    </option>
-                ))}
-            </Select>
+            <Center>
+                <Stack direction="row">
+                    <Image
+                        boxSize="200px"
+                        src="../../Images/flashcards-logo-big.png"
+                        alt="Flashcards App"
+                    />
+                </Stack>
+            </Center>
+            <Center>
+                <Select
+                    m="5"
+                    onChange={(e) => handleUserChange(e.target.value)}
+                    placeholder="Select User"
+                >
+                    {users.map((user) => (
+                        <option value={user.id} key={user.id}>
+                            {user.name}
+                        </option>
+                    ))}
+                </Select>
+            </Center>
         </>
     );
 }
