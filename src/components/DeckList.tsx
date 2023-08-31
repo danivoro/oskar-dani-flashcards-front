@@ -43,6 +43,7 @@ export default function DeckList({
     return (
         <>
             <SimpleGrid
+                m="5"
                 spacing={4}
                 templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
             >
