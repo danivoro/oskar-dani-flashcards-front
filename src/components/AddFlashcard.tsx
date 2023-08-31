@@ -19,10 +19,12 @@ import config from "../../utils/config";
 
 interface AddFlashcardProps {
     deckId: number;
+    setChangeCardWatcher: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function AddFlashcard({
     deckId,
+    setChangeCardWatcher,
 }: AddFlashcardProps): JSX.Element {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [front, setFront] = useState("");
@@ -52,6 +54,7 @@ export default function AddFlashcard({
             setFront("");
             setBack("");
             showCardToast();
+            setChangeCardWatcher((prev) => prev + 1);
         } catch (err) {
             console.error(err);
         }

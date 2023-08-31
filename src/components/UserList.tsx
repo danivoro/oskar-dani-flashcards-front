@@ -14,6 +14,7 @@ export default function UserList({
     setUserId,
     setDeckId,
 }: UserListProps): JSX.Element {
+    const [renderCounter, setRenderCounter] = useState(0);
     const [users, setUsers] = useState<IUser[]>([]);
     const baseURL = config.baseURL;
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function UserList({
             }
         };
         getAllUsers();
-    }, [baseURL]);
+    }, [baseURL, renderCounter]);
 
     const handleUserChange = (userId: string) => {
         const userIdNum = parseInt(userId);
@@ -58,7 +59,7 @@ export default function UserList({
                         </option>
                     ))}
                 </Select>
-                <AddUser />
+                <AddUser setRenderCounter={setRenderCounter} />
             </Container>
         </>
     );

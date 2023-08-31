@@ -17,7 +17,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import config from "../../utils/config";
 
-export default function AddUser(): JSX.Element {
+interface AddUserProps {
+    setRenderCounter: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function AddUser({
+    setRenderCounter,
+}: AddUserProps): JSX.Element {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [user, setUser] = useState("");
 
@@ -42,6 +48,7 @@ export default function AddUser(): JSX.Element {
             });
             showUserToast();
             setUser("");
+            setRenderCounter((prev) => prev + 1);
         } catch (err) {
             console.error(err);
         }

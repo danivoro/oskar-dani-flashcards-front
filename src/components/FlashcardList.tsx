@@ -19,6 +19,7 @@ export default function FlashcardList({
     deck,
 }: FlashcardListProps): JSX.Element {
     const [flashcards, setFlashcards] = useState<IFlashcard[]>([]);
+    const [changeCardWatcher, setChangeCardWatcher] = useState(0);
     const baseURL = config.baseURL;
     useEffect(() => {
         const getDeckFlashcards = async () => {
@@ -32,7 +33,7 @@ export default function FlashcardList({
             }
         };
         getDeckFlashcards();
-    }, [baseURL, deckId]);
+    }, [baseURL, deckId, changeCardWatcher]);
 
     return (
         <>
@@ -40,7 +41,10 @@ export default function FlashcardList({
                 ← Back to decks
             </Button>
 
-            <AddFlashcard deckId={deckId} />
+            <AddFlashcard
+                deckId={deckId}
+                setChangeCardWatcher={setChangeCardWatcher}
+            />
 
             <Center>
                 <Heading m="5">{deck.name} Deck</Heading>
