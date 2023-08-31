@@ -57,7 +57,9 @@ export default function FlashcardList({
             />
 
             <Center>
-                <Heading m="5">{deck.name} Deck</Heading>
+                <Heading m="5" fontSize="36px">
+                    Your {deck.name} Deck
+                </Heading>
             </Center>
 
             {flashcardsToReview.map((card) => (

@@ -5,6 +5,7 @@ import {
     CardFooter,
     Button,
     Center,
+    useToast,
 } from "@chakra-ui/react";
 import IFlashcard from "../Interfaces/IFlashcard";
 import { useState } from "react";
@@ -20,6 +21,17 @@ export default function Flashcard({
 }: IFlashcard): JSX.Element {
     const [side, setSide] = useState<"front" | "back">("front");
 
+    const toast = useToast();
+    const showCorrectToast = () => {
+        toast({
+            title: "Congrats!",
+            description: "You won't see this card again today.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
+
     function flipCard() {
         setSide((prev) => (prev === "front" ? "back" : "front"));
     }
@@ -28,6 +40,7 @@ export default function Flashcard({
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
+        showCorrectToast();
         try {
             await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
                 interval: 2,
@@ -41,11 +54,11 @@ export default function Flashcard({
         <>
             <Center>
                 <Card
-                    width="500px"
-                    height="500px"
+                    width="400px"
+                    height="400px"
                     m="5"
                     align="center"
-                    bg={side === "front" ? "#202024" : "#707070"}
+                    bg={side === "front" ? "#090856" : "#42425F"}
                 >
                     <CardBody
                         display="flex"
@@ -57,14 +70,34 @@ export default function Flashcard({
                         </Text>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={flipCard} colorScheme="blue">
-                            Flip
-                        </Button>
+                        {side === "front" ? (
+                            <Button m="2" onClick={flipCard} colorScheme="blue">
+                                Flip
+                            </Button>
+                        ) : (
+                            <>
+                                <Button
+                                    m="2"
+                                    colorScheme="green"
+                                    onClick={(e) => handleCorrect(e)}
+                                >
+                                    Correct
+                                </Button>
+                                <Button m="2" colorScheme="red">
+                                    Incorrect
+                                </Button>
+                                <Button
+                                    m="2"
+                                    onClick={flipCard}
+                                    colorScheme="blue"
+                                >
+                                    Flip Back
+                                </Button>
+                            </>
+                        )}
                     </CardFooter>
                 </Card>
             </Center>
-            <Button onClick={(e) => handleCorrect(e)}>Correct</Button>
-            <Button>Incorrect</Button>
         </>
     );
 }
