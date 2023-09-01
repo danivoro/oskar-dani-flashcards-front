@@ -41,7 +41,7 @@ export default function UserList({
                 <Stack direction="row">
                     <Image
                         boxSize="200px"
-                        src="/public/flashcards-logo-big.png"
+                        src="/flashcards-logo-big.png"
                         alt="Flashcards App"
                     />
                 </Stack>

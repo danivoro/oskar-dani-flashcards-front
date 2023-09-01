@@ -35,24 +35,40 @@ export default function FlashcardList({
         getDeckFlashcards();
     }, [baseURL, deckId, changeCardWatcher]);
 
+    const today = new Date().toISOString().split("T")[0];
+
+    const flashcardsToReview = flashcards
+        .filter((card) => {
+            console.log(card.front);
+            console.log(`Next review is ${card.next_review}`);
+            console.log(`Today is ${new Date()}`);
+
+            return card.next_review.toString().split("T")[0] <= today;
+        })
+        .sort((a, b) => (a.next_review < b.next_review ? -1 : 1));
+
     return (
         <>
             <Button m="5" onClick={() => setDeckId(0)}>
                 ← Back to decks
             </Button>
-
             <AddFlashcard
                 deckId={deckId}
                 setChangeCardWatcher={setChangeCardWatcher}
             />
-
             <Center>
-                <Heading m="5">{deck.name} Deck</Heading>
+                <Heading m="5" fontSize="36px">
+                    Your {deck.name} Deck
+                </Heading>
             </Center>
-
-            {flashcards.map((card) => (
-                <Flashcard key={card.card_id} {...card} />
-            ))}
+            {flashcardsToReview.length > 0 ? (
+                <Flashcard
+                    {...flashcardsToReview[0]}
+                    setChangeCardWatcher={setChangeCardWatcher}
+                />
+            ) : (
+                <Heading>No cards to review! Come back later.</Heading>
+            )}
         </>
     );
 }
