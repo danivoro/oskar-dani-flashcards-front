@@ -3,5 +3,5 @@ export default interface IFlashcard {
     front: string;
     back: string;
     next_review: Date;
-    interval: number;
+    streak: number;
 }

@@ -12,13 +12,17 @@ import { useState } from "react";
 import axios from "axios";
 import config from "../../utils/config";
 
+interface FlashcardProps extends IFlashcard {
+    setChangeCardWatcher: React.Dispatch<React.SetStateAction<number>>;
+}
+
 export default function Flashcard({
     card_id,
     front,
     back,
-    next_review,
-    interval,
-}: IFlashcard): JSX.Element {
+    streak,
+    setChangeCardWatcher,
+}: FlashcardProps): JSX.Element {
     const [side, setSide] = useState<"front" | "back">("front");
 
     const toast = useToast();
@@ -40,30 +44,40 @@ export default function Flashcard({
         setSide((prev) => (prev === "front" ? "back" : "front"));
     }
 
-    const handleCorrect = async (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-        e.preventDefault();
-        showToast(
-            "Congrats!",
-            "You won't see this card again today",
-            "success"
-        );
+    const handleCorrect = async () => {
         try {
+            console.log("Doing this");
             await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
-                interval: 2,
+                streak: streak + 1,
             });
+            setChangeCardWatcher((prev) => prev + 1);
+            setSide("front");
+            showToast(
+                "Congrats!",
+                "You won't see this card again today",
+                "success"
+            );
         } catch (err) {
             console.error(err);
         }
     };
 
-    const handleIncorrect = () => {
-        showToast(
-            "Oops!",
-            "You will need to go over this again today.",
-            "info"
-        );
+    const handleIncorrect = async () => {
+        try {
+            console.log("Doing this");
+            await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
+                streak: 0,
+            });
+            setChangeCardWatcher((prev) => prev + 1);
+            setSide("front");
+            showToast(
+                "Oops!",
+                "You will need to go over this again today.",
+                "info"
+            );
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
@@ -95,14 +109,14 @@ export default function Flashcard({
                                 <Button
                                     m="2"
                                     colorScheme="green"
-                                    onClick={(e) => handleCorrect(e)}
+                                    onClick={() => handleCorrect()}
                                 >
                                     Correct
                                 </Button>
                                 <Button
                                     m="2"
                                     colorScheme="red"
-                                    onClick={(e) => handleIncorrect()}
+                                    onClick={() => handleIncorrect()}
                                 >
                                     Incorrect
                                 </Button>
