@@ -35,6 +35,11 @@ export default function UserList({
         setDeckId(0);
     };
 
+    const handleLogoClick = () => {
+        // Update the current page state to navigate to the main page
+        setUserId(0);
+    };
+
     return (
         <>
             <Center>
@@ -43,6 +48,8 @@ export default function UserList({
                         boxSize="200px"
                         src="/flashcards-logo-big.png"
                         alt="Flashcards App"
+                        onClick={handleLogoClick}
+                        style={{ cursor: "pointer" }}
                     />
                 </Stack>
             </Center>

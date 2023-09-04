@@ -31,22 +31,46 @@ export default function AddUser({
     const finalRef = React.useRef(null);
 
     const toast = useToast();
-    const showUserToast = () => {
+    const showUserToast = (
+        title: string,
+        description: string,
+        status: "info" | "warning" | "success" | "error" | "loading" | undefined
+    ) => {
         toast({
-            title: "User created.",
-            description: "The new user is created in the app",
-            status: "success",
+            title: title,
+            description: description,
+            status: status,
             duration: 9000,
             isClosable: true,
         });
     };
 
     const handleAddUser = async () => {
+        if (!user.trim()) {
+            showUserToast(
+                "User name cannot be empty.",
+                "Please, try to enter a valid name for the user",
+                "error"
+            );
+            return;
+        }
+        if (user.length < 2) {
+            showUserToast(
+                "User name is too short.",
+                "Please, try to enter a name at least two characters long",
+                "error"
+            );
+            return;
+        }
         try {
             await axios.post(`${config.baseURL}/users`, {
                 user_name: user,
             });
-            showUserToast();
+            showUserToast(
+                "User created.",
+                "The new user is created in the app",
+                "success"
+            );
             setUser("");
             setRenderCounter((prev) => prev + 1);
         } catch (err) {
