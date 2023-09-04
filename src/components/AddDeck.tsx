@@ -23,11 +23,15 @@ export default function AddDeck({
     const [title, setTitle] = useState("");
 
     const toast = useToast();
-    const showDeckToast = () => {
+    const showDeckToast = (
+        title: string,
+        description: string,
+        status: "info" | "warning" | "success" | "error" | "loading" | undefined
+    ) => {
         toast({
-            title: "Deck created.",
-            description: "The new deck has been added for your user",
-            status: "success",
+            title: title,
+            description: description,
+            status: status,
             duration: 9000,
             isClosable: true,
         });
@@ -37,13 +41,27 @@ export default function AddDeck({
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
+
+        if (!title.trim()) {
+            showDeckToast(
+                "Deck title cannot be empty.",
+                "Please, try to enter a valid name for the deck",
+                "error"
+            );
+            return;
+        }
+
         try {
             await axios.post(`${config.baseURL}/decks`, {
                 name: title,
                 user_id: userId,
             });
             setTitle("");
-            showDeckToast();
+            showDeckToast(
+                "Sucessfully created!",
+                "The deck is added to your user.",
+                "success"
+            );
             setChangeDeckWatcher((prev) => prev + 1);
         } catch (err) {
             console.error(err);
