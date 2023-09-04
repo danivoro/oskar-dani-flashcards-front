@@ -49,7 +49,6 @@ export default function AddFlashcard({
     };
 
     const handleAddCard = async () => {
-        //Testing for falsy values here is ok, because 0 input in UI would be "0" in the app.
         if (!front || !back) {
             showCardToast(
                 "Card fields cannot be empty.",

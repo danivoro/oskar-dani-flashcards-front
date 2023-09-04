@@ -57,7 +57,7 @@ export default function AddUser({
         if (user.length < 2) {
             showUserToast(
                 "User name is too short.",
-                "Please, try to enter a name a tleast two characters long",
+                "Please, try to enter a name at least two characters long",
                 "error"
             );
             return;
