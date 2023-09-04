@@ -85,7 +85,13 @@ export default function AddUser({
 
     return (
         <>
-            <Button m="5" bg="green" color="white" onClick={onOpen}>
+            <Button
+                minWidth="110px"
+                m="5"
+                bg="green"
+                color="white"
+                onClick={onOpen}
+            >
                 + Add User
             </Button>
 

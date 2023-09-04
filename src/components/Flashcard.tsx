@@ -6,7 +6,10 @@ import {
     Button,
     Center,
     useToast,
+    IconButton,
+    CardHeader,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import IFlashcard from "../Interfaces/IFlashcard";
 import { useState } from "react";
 import axios from "axios";
@@ -29,13 +32,20 @@ export default function Flashcard({
     const showToast = (
         title: string,
         description: string,
-        status: "info" | "warning" | "success" | "error" | "loading" | undefined
+        status:
+            | "info"
+            | "warning"
+            | "success"
+            | "error"
+            | "loading"
+            | undefined,
+        duration: number
     ) => {
         toast({
             title: title,
             description: description,
             status: status,
-            duration: 9000,
+            duration: duration,
             isClosable: true,
         });
     };
@@ -55,7 +65,8 @@ export default function Flashcard({
             showToast(
                 "Congrats!",
                 "You won't see this card again today",
-                "success"
+                "success",
+                2000
             );
         } catch (err) {
             console.error(err);
@@ -73,37 +84,61 @@ export default function Flashcard({
             showToast(
                 "Oops!",
                 "You will need to go over this again today.",
-                "info"
+                "info",
+                2000
             );
         } catch (err) {
             console.error(err);
         }
     };
 
+    async function handleDelete() {
+        try {
+            await axios.delete(`${config.baseURL}/flashcards/${card_id}`);
+            setChangeCardWatcher((prev) => prev + 1);
+            setSide("front");
+            showToast("Done!", "Flashcard sucessfully deleted.", "info", 2000);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <>
             <Center>
                 <Card
+                    display="flex"
+                    alignItems="center"
                     width="400px"
                     height="400px"
                     m="5"
-                    align="center"
                     bg={side === "front" ? "#090856" : "#42425F"}
                 >
-                    <CardBody
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
+                    <CardHeader alignSelf="flex-end">
+                        <IconButton
+                            colorScheme="red"
+                            aria-label="Call Segun"
+                            size="md"
+                            icon={<DeleteIcon />}
+                            onClick={handleDelete}
+                        />
+                    </CardHeader>
+                    <CardBody display="flex" alignItems="center">
                         <Text color="white" fontSize="64px">
                             {side === "front" ? front : back}
                         </Text>
                     </CardBody>
                     <CardFooter>
                         {side === "front" ? (
-                            <Button m="2" onClick={flipCard} colorScheme="blue">
-                                Flip
-                            </Button>
+                            <>
+                                <Button
+                                    m="2"
+                                    onClick={flipCard}
+                                    colorScheme="blue"
+                                >
+                                    Flip
+                                </Button>
+                            </>
                         ) : (
                             <>
                                 <Button

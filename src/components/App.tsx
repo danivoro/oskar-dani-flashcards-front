@@ -13,7 +13,11 @@ function App() {
     console.log(deckId);
     return (
         <ChakraProvider>
-            <UserList setUserId={setUserId} setDeckId={setDeckId} />
+            <UserList
+                setUserId={setUserId}
+                setDeckId={setDeckId}
+                userId={userId}
+            />
             {userId !== 0 && deckId === 0 && (
                 <>
                     <DeckList
