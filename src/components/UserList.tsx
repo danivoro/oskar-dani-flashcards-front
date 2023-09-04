@@ -4,15 +4,18 @@ import config from "../../utils/config";
 import axios from "axios";
 import { Select, Image, Stack, Center, Container } from "@chakra-ui/react";
 import AddUser from "./AddUser";
+import DeleteUser from "./DeleteUser";
 
 interface UserListProps {
     setUserId: React.Dispatch<React.SetStateAction<number>>;
     setDeckId: React.Dispatch<React.SetStateAction<number>>;
+    userId: number;
 }
 
 export default function UserList({
     setUserId,
     setDeckId,
+    userId,
 }: UserListProps): JSX.Element {
     const [renderCounter, setRenderCounter] = useState(0);
     const [users, setUsers] = useState<IUser[]>([]);
@@ -37,7 +40,7 @@ export default function UserList({
 
     const handleLogoClick = () => {
         // Update the current page state to navigate to the main page
-        setUserId(0);
+        window.location.reload();
     };
 
     return (
@@ -53,8 +56,9 @@ export default function UserList({
                     />
                 </Stack>
             </Center>
-            <Container display="flex">
+            <Container display="flex" alignItems="center">
                 <Select
+                    minWidth="250px"
                     flexGrow="5"
                     m="5"
                     onChange={(e) => handleUserChange(e.target.value)}
@@ -67,6 +71,17 @@ export default function UserList({
                     ))}
                 </Select>
                 <AddUser setRenderCounter={setRenderCounter} />
+                {userId > 0 && (
+                    <DeleteUser
+                        userId={userId}
+                        currentUser={
+                            users.find((user) => user.id === userId) as IUser
+                        }
+                        setUserId={setUserId}
+                        setRenderCounter={setRenderCounter}
+                        setDeckId={setDeckId}
+                    />
+                )}
             </Container>
         </>
     );
