@@ -34,17 +34,30 @@ export default function AddFlashcard({
     const finalRef = React.useRef(null);
 
     const toast = useToast();
-    const showCardToast = () => {
+    const showCardToast = (
+        title: string,
+        description: string,
+        status: "info" | "warning" | "success" | "error" | "loading" | undefined
+    ) => {
         toast({
-            title: "Card created.",
-            description: "The new card is added to your deck",
-            status: "success",
+            title: title,
+            description: description,
+            status: status,
             duration: 9000,
             isClosable: true,
         });
     };
 
     const handleAddCard = async () => {
+        //Testing for falsy values here is ok, because 0 input in UI would be "0" in the app.
+        if (!front || !back) {
+            showCardToast(
+                "Card fields cannot be empty.",
+                "Please, try to enter a data for the card",
+                "error"
+            );
+            return;
+        }
         try {
             await axios.post(`${config.baseURL}/flashcards`, {
                 front,
@@ -53,7 +66,11 @@ export default function AddFlashcard({
             });
             setFront("");
             setBack("");
-            showCardToast();
+            showCardToast(
+                "Card created.",
+                "The new card is added to your deck",
+                "success"
+            );
             setChangeCardWatcher((prev) => prev + 1);
         } catch (err) {
             console.error(err);
