@@ -36,7 +36,6 @@ export default function DeckList({
         const getUserDecks = async () => {
             try {
                 const userDecks = await axios.get(`${baseURL}/decks/${userId}`);
-                console.table(userDecks.data);
                 setDecks(userDecks.data);
             } catch (err) {
                 console.error(err);

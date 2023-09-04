@@ -56,8 +56,7 @@ export default function Flashcard({
 
     const handleCorrect = async () => {
         try {
-            console.log("Doing this");
-            await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
+            await axios.put(`${config.baseURL}/flashcards/${card_id}`, {
                 streak: streak + 1,
             });
             setChangeCardWatcher((prev) => prev + 1);
@@ -75,8 +74,7 @@ export default function Flashcard({
 
     const handleIncorrect = async () => {
         try {
-            console.log("Doing this");
-            await axios.patch(`${config.baseURL}/flashcards/${card_id}`, {
+            await axios.put(`${config.baseURL}/flashcards/${card_id}`, {
                 streak: 0,
             });
             setChangeCardWatcher((prev) => prev + 1);

@@ -10,7 +10,6 @@ function App() {
     const [userId, setUserId] = useState(0);
     const [deckId, setDeckId] = useState(0);
     const [decks, setDecks] = useState<IDeck[]>([]);
-    console.log(deckId);
     return (
         <ChakraProvider>
             <UserList
